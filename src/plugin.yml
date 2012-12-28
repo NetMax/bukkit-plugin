@@ -1,0 +1,15 @@
+# Plugin
+name: BukGet
+main: org.morph.bukget.BukGet
+version: 1.0
+
+# Author and Info
+author: Morphesus
+website: http://www.morphs-dev-studio.de
+description: BukGets manages all your plugins. Its the Linux Package Manager for Bukkit
+
+# Commands
+commands:
+  bukget:
+    description: Base BukGet Command. See Documentation for more Information
+    usage: /bukget <command> [params]
