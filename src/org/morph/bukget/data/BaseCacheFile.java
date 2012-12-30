@@ -13,8 +13,8 @@ import java.io.IOException;
 public abstract class BaseCacheFile {
     public enum FileType {
         UNKNOWN_TYPE(0),
-        PLUGIN_LIST_CACHE(1),
-        PLUGIN_FULL_CACHE(2);
+        PLUGIN_NAME_CACHE(1),
+        PLUGIN_DETAIL_CACHE(2);
         
         private final int typenum;
         

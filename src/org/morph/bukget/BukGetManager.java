@@ -78,7 +78,7 @@ public class BukGetManager {
         
         if (plugins != null) {
             cache.setTimestamp(System.currentTimeMillis());
-            cache.setType(FileType.PLUGIN_LIST_CACHE);
+            cache.setType(FileType.PLUGIN_NAME_CACHE);
             cache.setPluginNames(plugins);
             
             return cache;

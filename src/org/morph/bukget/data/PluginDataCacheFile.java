@@ -147,4 +147,8 @@ public class PluginDataCacheFile extends BaseCacheFile {
         
         dos.close();
     }
+    
+    public void open(final File file) {
+        
+    }
 }
