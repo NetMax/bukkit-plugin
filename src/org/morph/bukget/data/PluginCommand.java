@@ -6,7 +6,7 @@ import java.util.List;
  *
  * @author Morphesus
  */
-class PluginCommand {
+public class PluginCommand {
     private String usage;
     private List<String> alias;
     private String command;
@@ -17,7 +17,7 @@ class PluginCommand {
         return usage;
     }
 
-    public List<String> getAlias() {
+    public List<String> getAliases() {
         return alias;
     }
 

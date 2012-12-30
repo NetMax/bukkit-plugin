@@ -4,7 +4,7 @@ package org.morph.bukget.data;
  *
  * @author Morphesus
  */
-class PluginPermission {
+public class PluginPermission {
     private String role;
     private String defaultPermission;
 

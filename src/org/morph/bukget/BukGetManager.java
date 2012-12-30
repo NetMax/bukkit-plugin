@@ -19,20 +19,42 @@ import org.morph.bukget.data.PluginListCacheFile;
  * @author Morphesus
  */
 public class BukGetManager {
-    public static final String URL_BUKGET_ROOT        = "http://bukget.org/";
-    public static final String URL_BUKGET_API         = URL_BUKGET_ROOT + "/api";
-    public static final String URL_BUKGET_API_PLUGINS = URL_BUKGET_API + "/plugins";
+    public static final String URL_BUKGET_ROOT            = "http://bukget.org/";
+    public static final String URL_BUKGET_API             = URL_BUKGET_ROOT + "/api";
+    public static final String URL_BUKGET_API_PLUGINS     = URL_BUKGET_API + "/plugins";
+    public static final String URL_BUKGET_API_PLUGIN_DATA = URL_BUKGET_API + "/plugin/";
     
     public PluginListCacheFile getCache() throws IOException {
-        if (existsCacheFile()) {
+        if (!existsCacheFile()) {
             updateLocalCache();
         }
         
         return new PluginListCacheFile(new File(BukGet.instance.getDataFolder(), BukGet.BUKGET_NAME_CACHE));
     }
 
-    public void updateLocalDataCache() {
+    public void updateLocalDataCache() throws IOException {
+        // Debug Info
         BukGet.debug("Creating Full Cache File ...");
+        
+        PluginListCacheFile plugins;
+        if (existsCacheFile()) {
+            plugins = getCache();
+        } else {
+            updateLocalCache();
+            plugins = getCache();
+        }
+        
+        if (plugins != null) {
+            for (String plugin : plugins.getPluginNames()) {
+                // Debug
+                BukGet.debug("Getting Data for '" + plugin + "'.");
+                
+                String pluginDataRaw = getData(URL_BUKGET_API_PLUGIN_DATA + plugin);
+                // TODO Parse Raw data
+            }
+        } else {
+            BukGet.instance.getLogger().severe("Could not get Plugin Name Cache");
+        }
     }
     
     public void updateLocalCache() throws IOException {

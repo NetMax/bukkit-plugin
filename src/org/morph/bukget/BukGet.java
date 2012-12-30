@@ -41,19 +41,24 @@ public class BukGet extends JavaPlugin {
                         // -- Parse action
                         if (action.equalsIgnoreCase("update") && sender.hasPermission("bukget.cache.update")) {
                             try {
-                                if (args.length < 2) { // Update names
-                                    sender.sendMessage("BukGet is now updating the local cache ...");
-                                    manager.updateLocalCache();
-                                    sender.sendMessage("The cache was successfully updated!");
+                                if (args.length > 2) {
+                                    final String updateType = args[2];
+                                    if (updateType.equalsIgnoreCase("names") && sender.hasPermission("bukget.cache.update.names")) { // Update names
+                                        sender.sendMessage("BukGet is now updating the local cache ...");
+                                        manager.updateLocalCache();
+                                        sender.sendMessage("The cache was successfully updated!");
 
-                                    return true;
-                                } else { // Update a specific database
-                                    final String doUpdate = args[2];
-                                    
-                                    if (doUpdate.equalsIgnoreCase("full") && sender.hasPermission("bukget.cache.update.full")) {
+                                        return true;
+                                    } else if (updateType.equalsIgnoreCase("full") && sender.hasPermission("bukget.cache.update.names")) {
+                                        // Full update
                                         sender.sendMessage(ChatColor.DARK_RED + "BukGet is performing a full update - Your server could lag!");
                                         manager.updateLocalDataCache();
                                         sender.sendMessage("The full-cache was successfully updated!");
+
+                                        return true;
+                                    } else {
+                                        sender.sendMessage(ChatColor.DARK_RED + "Unknown subcommand or missing permission.");
+                                        return true;
                                     }
                                 }
                             } catch (IOException ex) {
@@ -126,7 +131,8 @@ public class BukGet extends JavaPlugin {
                     }
                 }
             } else {
-                return false;
+                sender.sendMessage("Usage: /bukget <subcommand> [subcommand params]");
+                return true;
             }
         }
         

@@ -6,7 +6,7 @@ import java.util.List;
  *
  * @author Morphesus
  */
-class PluginVersion {
+public class PluginVersion {
     private String version;
     private String md5;
     private String filename;

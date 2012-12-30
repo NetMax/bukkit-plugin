@@ -45,7 +45,106 @@ public class PluginDataCacheFile extends BaseCacheFile {
         dos.writeLong(timestamp);
         dos.writeByte(type.getTypeNumber());
         
-        // Write data
+        /*** Write data -- enjoy ***/
+        dos.writeShort(this.plugins.size());
         
+        // Write out the plugins -- have fun ^^
+        for (PluginData plugin : this.plugins) {
+            // Slug
+            DataOutputHelper.writeSmallString(dos, plugin.getSlug());
+            
+            // PluginName
+            DataOutputHelper.writeSmallString(dos, plugin.getPluginName());
+            
+            // Server
+            DataOutputHelper.writeSmallString(dos, plugin.getServer());
+            
+            // Categories
+            dos.writeByte(plugin.getCategories().size());
+            for (String category : plugin.getCategories()) {
+                DataOutputHelper.writeSmallString(dos, category);
+            }
+            
+            // Authors
+            dos.writeByte(plugin.getAuthors().size());
+            for (String author : plugin.getAuthors()) {
+                DataOutputHelper.writeSmallString(dos, author);
+            }
+            
+            // Logo
+            DataOutputHelper.writeSmallString(dos, plugin.getLogo());
+            
+            // Logo Full
+            DataOutputHelper.writeSmallString(dos, plugin.getLogoFull());
+            
+            // Webpage
+            DataOutputHelper.writeSmallString(dos, plugin.getWebpage());
+            
+            // DBO Page
+            DataOutputHelper.writeSmallString(dos, plugin.getDboPage());
+            
+            // Description
+            DataOutputHelper.writeMediumString(dos, plugin.getDescription());
+            
+            // Versions
+            dos.writeByte(plugin.getVersions().size());
+            for (PluginVersion version : plugin.getVersions()) {
+                DataOutputHelper.writeSmallString(dos, version.getVersion());
+                DataOutputHelper.writeSmallString(dos, version.getMd5());
+                DataOutputHelper.writeSmallString(dos, version.getFilename());
+                DataOutputHelper.writeSmallString(dos, version.getLink());
+                DataOutputHelper.writeSmallString(dos, version.getDownload());
+                DataOutputHelper.writeSmallString(dos, version.getType());
+                DataOutputHelper.writeSmallString(dos, version.getStatus());
+                DataOutputHelper.writeMediumString(dos, version.getChangelog());
+                
+                // Version -- GameVersions
+                dos.writeByte(version.getGameVersions().size());
+                for (String gameVersion : version.getGameVersions()) {
+                    DataOutputHelper.writeSmallString(dos, gameVersion);
+                }
+                
+                dos.writeLong(version.getDate());
+                
+                DataOutputHelper.writeSmallString(dos, version.getSlug());
+                
+                // Version -- Hard Dependencies
+                dos.writeByte(version.getHardDependencies().size());
+                for (String hd : version.getHardDependencies()) {
+                    DataOutputHelper.writeSmallString(dos, hd);
+                }
+                
+                // Version -- Soft Dependencies
+                dos.writeByte(version.getSoftDependencies().size());
+                for (String hd : version.getSoftDependencies()) {
+                    DataOutputHelper.writeSmallString(dos, hd);
+                }
+                
+                // Version -- Commands
+                dos.writeShort(version.getCommands().size());
+                for (PluginCommand cmd : version.getCommands()) {
+                    DataOutputHelper.writeSmallString(dos, cmd.getUsage());
+                    
+                    // Version -- Commands -- Aliases
+                    dos.writeByte(cmd.getAliases().size());
+                    for (String alias : cmd.getAliases()) {
+                        DataOutputHelper.writeSmallString(dos, alias);
+                    }
+                    
+                    DataOutputHelper.writeSmallString(dos, cmd.getCommand());
+                    DataOutputHelper.writeSmallString(dos, cmd.getPermission());
+                    DataOutputHelper.writeSmallString(dos, cmd.getPermissionMessage());
+                }
+                
+                // Version -- Permissions
+                dos.writeShort(version.getPermissions().size());
+                for (PluginPermission perm : version.getPermissions()) {
+                    DataOutputHelper.writeSmallString(dos, perm.getRole());
+                    DataOutputHelper.writeSmallString(dos, perm.getDefaultPermission());
+                }
+            }
+        }
+        
+        dos.close();
     }
 }
