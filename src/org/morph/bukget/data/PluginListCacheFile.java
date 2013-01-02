@@ -20,9 +20,8 @@ public class PluginListCacheFile extends BaseCacheFile {
     private File         file;
 
     public PluginListCacheFile(final File file) throws IOException {
-        if (file != null && file.exists()){
+        if (file != null){
             this.file = file;
-            open(file);
         }
     }
 
@@ -98,8 +97,17 @@ public class PluginListCacheFile extends BaseCacheFile {
         // Close stream
         dos.close();
     }
+    
+    public final boolean open() throws IOException {
+        if (this.file != null) {
+            openFile(this.file);
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-    public final void open(final File file) throws IOException {
+    public final void openFile(final File file) throws IOException {
         DataInputStream     dis = new DataInputStream(new FileInputStream(file));
         
         // Read header

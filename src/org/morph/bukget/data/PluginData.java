@@ -8,6 +8,7 @@ import java.util.List;
  * @author Morphesus
  */
 public class PluginData {
+    private String status;
     private String slug;
     private String pluginName;
     private String server;
@@ -19,6 +20,7 @@ public class PluginData {
     private String dboPage;
     private String description;
     private List<PluginVersion> versions;
+    private String name;
 
     public String getSlug() {
         return slug;
@@ -116,5 +118,21 @@ public class PluginData {
         if (version != null) {
             this.versions.add(version);
         }
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    public String getStatus() {
+        return this.status;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getName() {
+        return this.name;
     }
 }

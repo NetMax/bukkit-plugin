@@ -82,4 +82,64 @@ public class PluginVersion {
     public List<PluginPermission> getPermissions() {
         return permissions;
     }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public void setMd5(String md5) {
+        this.md5 = md5;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public void setDownload(String download) {
+        this.download = download;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setChangelog(String changelog) {
+        this.changelog = changelog;
+    }
+
+    public void setGameVersions(List<String> gameVersions) {
+        this.gameVersions = gameVersions;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public void setHardDependencies(List<String> hardDependencies) {
+        this.hardDependencies = hardDependencies;
+    }
+
+    public void setSoftDependencies(List<String> softDependencies) {
+        this.softDependencies = softDependencies;
+    }
+
+    public void setCommands(List<PluginCommand> commands) {
+        this.commands = commands;
+    }
+
+    public void setPermissions(List<PluginPermission> permissions) {
+        this.permissions = permissions;
+    }
 }

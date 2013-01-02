@@ -18,8 +18,14 @@ public class PluginDataCacheFile extends BaseCacheFile {
     
     public PluginDataCacheFile() { }
     public PluginDataCacheFile(File file) {
-        if (file != null && file.exists()) {
+        if (file != null) {
             this.file = file;
+        }
+    }
+    
+    public void addPluginData(final PluginData data) {
+        if (data != null) {
+            this.plugins.add(data);
         }
     }
     
@@ -148,7 +154,21 @@ public class PluginDataCacheFile extends BaseCacheFile {
         dos.close();
     }
     
-    public void open(final File file) {
+    public boolean open() throws IOException {
+        if (this.file != null) {
+            openFile(this.file);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public void openFile(final File file) throws IOException {
+        // Read header
+        BaseCacheFile header = BaseCacheFile.readHeader(file);
+        this.timestamp       = header.getTimestamp();
+        this.type            = header.getType();
         
+        // TODO :: Read data
     }
 }
