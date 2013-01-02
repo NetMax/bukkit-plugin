@@ -97,6 +97,8 @@ public class BukGetManager {
             version.setType(jsonObjVersion.get("type").toString());
             version.setDownload(jsonObjVersion.get("dl_link").toString());
             version.setFilename(jsonObjVersion.get("filename").toString());
+            
+            pData.addVersion(version);
         }
         
         return pData;

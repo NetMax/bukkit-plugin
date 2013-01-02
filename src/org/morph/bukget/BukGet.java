@@ -167,13 +167,22 @@ public class BukGet extends JavaPlugin {
                                         
                                         // Gathering data for output
                                         List<String> output    = new ArrayList<String>();
-                                        output.add(String.format("== Plugin: %s ==", pData.getPluginName()));
-                                        output.add(String.format("Status: %s", pData.getStatus()));
-                                        output.add(String.format("Description: %s",
-                                                pData.getDescription().length() > 25 ?
-                                                pData.getDescription().subSequence(0, 25) + " ..." :
+                                        
+                                        output.add(String.format(
+                                                ChatColor.translateAlternateColorCodes('&', "== &lPlugin:&r &o%s&r =="), pData.getPluginName()));
+                                        
+                                        output.add(String.format(
+                                                ChatColor.translateAlternateColorCodes('&', "&lStatus:&r &o%s&r"), pData.getStatus()));
+                                        
+                                        output.add(String.format(
+                                                ChatColor.translateAlternateColorCodes('&', "&lDescription:&r &o%s&r"),
+                                                pData.getDescription().length() > 60 ?
+                                                pData.getDescription().subSequence(0, 60) + " [...]" :
                                                 pData.getDescription()));
-                                        output.add(String.format("Last Version: %s", pData.getVersions().get(pData.getVersions().size()).getVersion())); // FIXME: NullPointerException
+                                        
+                                        output.add(String.format(
+                                                ChatColor.translateAlternateColorCodes('&', "&lLast Version:&r &o%s"),
+                                                pData.getVersions().get(pData.getVersions().size() - 1).getVersion()));
                                         
                                         String[] outputSArr = output.toArray(new String[output.size()]);
                                         sender.sendMessage(outputSArr);
@@ -190,6 +199,9 @@ public class BukGet extends JavaPlugin {
                                         
                                         return true;
                                     }
+                                } else {
+                                    sender.sendMessage("Usage: /bukget plugin info <plugin_name>");
+                                    return true;
                                 }
                             } else {
                                 sender.sendMessage(ChatColor.DARK_RED + "You don't have the permission to perform this command!");
