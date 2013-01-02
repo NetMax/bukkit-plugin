@@ -22,6 +22,7 @@ public class PluginListCacheFile extends BaseCacheFile {
     public PluginListCacheFile(final File file) throws IOException {
         if (file != null){
             this.file = file;
+            this.open();
         }
     }
 

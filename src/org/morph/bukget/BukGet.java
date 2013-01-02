@@ -173,7 +173,7 @@ public class BukGet extends JavaPlugin {
                                                 pData.getDescription().length() > 25 ?
                                                 pData.getDescription().subSequence(0, 25) + " ..." :
                                                 pData.getDescription()));
-                                        output.add(String.format("Last Version: %s", pData.getVersions().get(pData.getVersions().size()).getVersion()));
+                                        output.add(String.format("Last Version: %s", pData.getVersions().get(pData.getVersions().size()).getVersion())); // FIXME: NullPointerException
                                         
                                         String[] outputSArr = output.toArray(new String[output.size()]);
                                         sender.sendMessage(outputSArr);
@@ -227,6 +227,11 @@ public class BukGet extends JavaPlugin {
         // Startup daemon
         daemon.setDaemon(true);
         daemon.start();
+    }
+
+    @Override
+    public void onDisable() {
+        daemon.interrupt();
     }
     
     public static void debug(String msg) {

@@ -107,7 +107,12 @@ public class BukGetManager {
         BukGet.debug("Creating Cache File ...");
         
         PluginListCacheFile cacheData = createCache();
-        cacheData.saveAs(new File(BukGet.instance.getDataFolder(), BukGet.BUKGET_NAME_CACHE));
+        
+        if (cacheData != null) {
+            cacheData.saveAs(new File(BukGet.instance.getDataFolder(), BukGet.BUKGET_NAME_CACHE));
+        } else {
+            BukGet.instance.getLogger().severe("Error: CacheData is null! Could not save " + BukGet.BUKGET_NAME_CACHE);
+        }
     }
     
     public boolean existsCacheFile() {

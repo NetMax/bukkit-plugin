@@ -17,9 +17,10 @@ public class PluginDataCacheFile extends BaseCacheFile {
     private File             file;
     
     public PluginDataCacheFile() { }
-    public PluginDataCacheFile(File file) {
+    public PluginDataCacheFile(File file) throws IOException {
         if (file != null) {
             this.file = file;
+            this.open();
         }
     }
     
@@ -154,7 +155,7 @@ public class PluginDataCacheFile extends BaseCacheFile {
         dos.close();
     }
     
-    public boolean open() throws IOException {
+    public final boolean open() throws IOException {
         if (this.file != null) {
             openFile(this.file);
             return true;

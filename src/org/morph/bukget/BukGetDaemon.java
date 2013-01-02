@@ -25,7 +25,7 @@ public class BukGetDaemon extends Thread {
             if (cache_file.exists()) {
                 try {
                     PluginListCacheFile cache = new PluginListCacheFile(cache_file);
-
+                    
                     // We need a update
                     if (System.currentTimeMillis() > (cache.getTimestamp() + BukGet.instance.getConfig().getLong("daemon.cache.update_interval", 1800000))) {
                         BukGet.manager.updateLocalCache();
@@ -44,9 +44,7 @@ public class BukGetDaemon extends Thread {
             
             try {
                 Thread.sleep(BukGet.instance.getConfig().getLong("daemon.thread_interval", 5000));
-            } catch (InterruptedException ex) {
-                BukGet.instance.getLogger().log(Level.SEVERE, null, ex);
-            }
+            } catch (InterruptedException ex) { }
         }
     }
 }
