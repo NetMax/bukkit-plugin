@@ -74,6 +74,12 @@ public class BukGetManager {
         Object     json   = parser.parse(raw);
         JSONObject root   = (JSONObject) json;
         
+        // -- Check plugin existence
+        if (root.containsKey("error")) {
+            return null;
+        }
+        
+        // -- Read plugin details
         pData.setStatus(root.get("status").toString());
         pData.setName(root.get("name").toString());
         pData.setPluginName(root.get("plugin_name").toString());

@@ -165,29 +165,34 @@ public class BukGet extends JavaPlugin {
                                     try {
                                         PluginData   pData      = manager.getPluginData(pluginName);
                                         
-                                        // Gathering data for output
-                                        List<String> output    = new ArrayList<String>();
-                                        
-                                        output.add(String.format(
-                                                ChatColor.translateAlternateColorCodes('&', "== &lPlugin:&r &o%s&r =="), pData.getPluginName()));
-                                        
-                                        output.add(String.format(
-                                                ChatColor.translateAlternateColorCodes('&', "&lStatus:&r &o%s&r"), pData.getStatus()));
-                                        
-                                        output.add(String.format(
-                                                ChatColor.translateAlternateColorCodes('&', "&lDescription:&r &o%s&r"),
-                                                pData.getDescription().length() > 60 ?
-                                                pData.getDescription().subSequence(0, 60) + " [...]" :
-                                                pData.getDescription()));
-                                        
-                                        output.add(String.format(
-                                                ChatColor.translateAlternateColorCodes('&', "&lLast Version:&r &o%s"),
-                                                pData.getVersions().get(pData.getVersions().size() - 1).getVersion()));
-                                        
-                                        String[] outputSArr = output.toArray(new String[output.size()]);
-                                        sender.sendMessage(outputSArr);
-                                        
-                                        return true;
+                                        if (pData != null) {
+                                            // Gathering data for output
+                                            List<String> output    = new ArrayList<String>();
+
+                                            output.add(String.format(
+                                                    ChatColor.translateAlternateColorCodes('&', "== &lPlugin:&r &o%s&r =="), pData.getPluginName()));
+
+                                            output.add(String.format(
+                                                    ChatColor.translateAlternateColorCodes('&', "&lStatus:&r &o%s&r"), pData.getStatus()));
+
+                                            output.add(String.format(
+                                                    ChatColor.translateAlternateColorCodes('&', "&lDescription:&r &o%s&r"),
+                                                    pData.getDescription().length() > 60 ?
+                                                    pData.getDescription().subSequence(0, 60) + " [...]" :
+                                                    pData.getDescription()));
+
+                                            output.add(String.format(
+                                                    ChatColor.translateAlternateColorCodes('&', "&lLast Version:&r &o%s"),
+                                                    pData.getVersions().get(pData.getVersions().size() - 1).getVersion()));
+
+                                            String[] outputSArr = output.toArray(new String[output.size()]);
+                                            sender.sendMessage(outputSArr);
+
+                                            return true;
+                                        } else {
+                                            sender.sendMessage(ChatColor.DARK_RED + "Could not find a plugin called '" + pluginName + "'");
+                                            return true;
+                                        }
                                     } catch (IOException ex) {
                                         getLogger().log(Level.SEVERE, null, ex);
                                         sender.sendMessage(ChatColor.DARK_RED + "Could not get informations about the plugin. Please contact the plugin developer");
