@@ -1,5 +1,6 @@
 package org.morph.bukget.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.morph.bukget.BukGet;
@@ -21,9 +22,13 @@ public class CommandDebugMode implements BukGetCommand {
             
             if (mode.equalsIgnoreCase("on")) {
                 BukGet.setDebugMode(true);
+                sender.sendMessage("BukGet Debugging is now " + ChatColor.GREEN + "on");
+                
                 return BukGetCommandResult.SUCCESS;
             } else if (mode.equalsIgnoreCase("off")) {
                 BukGet.setDebugMode(false);
+                sender.sendMessage("BukGet Debugging is now " + ChatColor.RED + "off");
+                
                 return BukGetCommandResult.SUCCESS;
             } else {
                 return BukGetCommandResult.ILLEGAL_ARGUMENT;

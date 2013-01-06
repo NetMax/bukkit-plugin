@@ -12,7 +12,7 @@ import org.morph.bukget.commands.CommandCache;
 import org.morph.bukget.commands.CommandDebugMode;
 
 /**
- *
+ * Main BukGet Class
  * @author Morphesus
  */
 public class BukGet extends JavaPlugin {
@@ -69,7 +69,7 @@ public class BukGet extends JavaPlugin {
                 return true;
             }
         } else {
-            sender.sendMessage("Usage: /bukget <cache|plugin> [params]");
+            sender.sendMessage("Usage: /bukget <cache|plugin|debug> [params]");
             return true;
         }
     }
