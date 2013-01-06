@@ -9,14 +9,15 @@ import org.morph.bukget.commands.BukGetCommand;
 import org.morph.bukget.commands.BukGetCommandManager;
 import org.morph.bukget.commands.BukGetCommandResult;
 import org.morph.bukget.commands.CommandCache;
+import org.morph.bukget.commands.CommandDebugMode;
 
 /**
  *
  * @author Morphesus
  */
 public class BukGet extends JavaPlugin {
-    public static boolean DEBUG_MODE = true;
     public static BukGet         instance;
+    private static boolean       debugMode = true;
     
     // Core objects
     private BukGetManager        manager;
@@ -99,6 +100,7 @@ public class BukGet extends JavaPlugin {
     
     private void initCommands() {
         getCmdManager().registerCommand("cache", CommandCache.class);
+        getCmdManager().registerCommand("debug", CommandDebugMode.class);
     }
     
     public BukGetManager getManager() {
@@ -114,8 +116,16 @@ public class BukGet extends JavaPlugin {
     }
     
     public static void debug(String msg) {
-        if (DEBUG_MODE) {
+        if (debugMode) {
             BukGet.instance.getLogger().info(String.format("[DEBUG] %s", msg));
         }
+    }
+    
+    public static void setDebugMode(boolean mode) {
+        debugMode = mode;
+    }
+    
+    public static boolean getDebugMode() {
+        return debugMode;
     }
 }
