@@ -1,11 +1,14 @@
 package org.morph.bukget;
 
+import java.util.logging.Level;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.morph.bukget.commands.BukGetCommand;
 import org.morph.bukget.commands.BukGetCommandManager;
+import org.morph.bukget.commands.BukGetCommandResult;
+import org.morph.bukget.commands.CommandCache;
 
 /**
  *
@@ -26,13 +29,38 @@ public class BukGet extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (label.equalsIgnoreCase("bukget")) {
-            if (cmdManager.isRegistered(label)) {
-                final BukGetCommand cmd = cmdManager.getCommand(label);
-                if (sender.hasPermission(cmd.getPermission())) {
-                    return cmd.exec(this, sender, args);
-                } else {
-                    sender.sendMessage(ChatColor.RED + "Sorry, you don't have the permission to use this command! :(");
+        // -- Check root command
+        if (label.equalsIgnoreCase("bukget") && args.length > 0) {
+            // -- Get subCommand and check existence
+            final String subCommand = args[0];
+            if (cmdManager.isRegistered(subCommand)) {
+                // -- If command is existing, try to execute
+                try {
+                    // -- Get command and execute
+                    final BukGetCommand cmd = (BukGetCommand) cmdManager.getCommand(subCommand).newInstance();
+                    BukGetCommandResult res = cmd.exec(this, sender, args);
+                        
+                    // -- Check Result
+                    switch (res) {
+                        case SUCCESS:
+                            return true;
+                        case ILLEGAL_ARGUMENT:
+                            sender.sendMessage(cmd.getUsage());
+                            return true;
+                        case INSUFFICIENT_ARGUMENTS:
+                            sender.sendMessage(cmd.getUsage());
+                            return true;
+                        case NO_PERMISSION:
+                            sender.sendMessage(ChatColor.RED + "Sorry, you don't have the permission to use this command!");
+                            return true;
+                        default:
+                            return false;
+                    }
+                } catch (InstantiationException ex) {
+                    getLogger().log(Level.SEVERE, null, ex);
+                    return true;
+                } catch (IllegalAccessException ex) {
+                    getLogger().log(Level.SEVERE, null, ex);
                     return true;
                 }
             } else {
@@ -60,11 +88,17 @@ public class BukGet extends JavaPlugin {
         // Startup daemon
         this.daemon.setDaemon(true);
         this.daemon.start();
+        
+        this.initCommands();
     }
 
     @Override
     public void onDisable() {
         daemon.interrupt();
+    }
+    
+    private void initCommands() {
+        getCmdManager().registerCommand("cache", CommandCache.class);
     }
     
     public BukGetManager getManager() {

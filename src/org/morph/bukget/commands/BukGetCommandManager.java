@@ -4,33 +4,38 @@
  */
 package org.morph.bukget.commands;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import org.morph.bukget.BukGet;
 
 /**
  * Manages the huuuuge of BukGet commands
  * @author Morphesus
  */
 public class BukGetCommandManager {
-    private Map<String, BukGetCommand> commands = new HashMap<String, BukGetCommand>();
+    private Map<String, Class<?>> commands = new HashMap<String, Class<?>>();
     
-    public void registerCommand(BukGetCommand command) {
-        if (command != null) {
-            this.commands.put(command.getName(), command);
+    public void registerCommand(String cmd, Class<?> command) {
+        if (command != null && Arrays.asList(command.getInterfaces()).contains(BukGetCommand.class)) {
+            if (this.commands.put(cmd, command) != null) {
+                BukGet.instance.getLogger().log(Level.INFO, "Registered command: {0}", cmd);
+            }
         } else {
-            throw new NullPointerException("Could not register a 'null' command");
+            throw new IllegalArgumentException("Every command needs to be assignable from BukGetCommand class");
         }
     }
     
-    public BukGetCommand unregisterCommand(String label) {
-        return this.commands.remove(label);
+    public void unregisterCommand(String label) {
+        this.commands.remove(label);
     }
     
     public boolean isRegistered(String label) {
         return this.commands.containsKey(label);
     }
     
-    public BukGetCommand getCommand(String label) {
-        return (BukGetCommand) this.commands.get(label);
+    public Class<?> getCommand(String label) {
+        return this.commands.get(label);
     }
 }
