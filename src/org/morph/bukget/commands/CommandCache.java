@@ -1,14 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.morph.bukget.commands;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- *
+ * The '/bukget cache' Command
  * @author Morphesus
  */
 public class CommandCache implements BukGetCommand {

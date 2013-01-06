@@ -24,7 +24,7 @@ import org.morph.bukget.data.PluginVersion;
  * @author Morphesus
  */
 public class BukGetManager {
-    public static final String URL_BUKGET_ROOT            = "http://bukget.org/";
+    public static final String URL_BUKGET_ROOT            = "http://bukget.org";
     public static final String URL_BUKGET_API             = URL_BUKGET_ROOT + "/api";
     public static final String URL_BUKGET_API_PLUGINS     = URL_BUKGET_API + "/plugins";
     public static final String URL_BUKGET_API_PLUGIN_DATA = URL_BUKGET_API + "/plugin/";

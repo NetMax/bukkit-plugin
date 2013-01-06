@@ -39,7 +39,7 @@ public class BukGet extends JavaPlugin {
                     // -- Get command and execute
                     final BukGetCommand cmd = (BukGetCommand) cmdManager.getCommand(subCommand).newInstance();
                     BukGetCommandResult res = cmd.exec(this, sender, args);
-                        
+                    
                     // -- Check Result
                     switch (res) {
                         case SUCCESS:
