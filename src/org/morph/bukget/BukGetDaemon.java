@@ -28,7 +28,7 @@ public class BukGetDaemon extends Thread {
                     
                     // We need a update
                     if (System.currentTimeMillis() > (cache.getTimestamp() + BukGet.instance.getConfig().getLong("daemon.cache.update_interval", 1800000))) {
-                        BukGet.instance.getManager().updateLocalCache();
+                        BukGet.instance.getManager().updateLocalNameCache();
                     }
 
                 } catch (IOException ex) {
@@ -36,7 +36,7 @@ public class BukGetDaemon extends Thread {
                 }
             } else {
                 try {
-                    BukGet.instance.getManager().updateLocalCache();
+                    BukGet.instance.getManager().updateLocalNameCache();
                 } catch (IOException ex) {
                     BukGet.instance.getLogger().log(Level.SEVERE, null, ex);
                 }

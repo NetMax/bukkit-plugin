@@ -39,10 +39,23 @@ public class BukGetManager {
      */
     public PluginListCacheFile getCache() throws IOException {
         if (!existsNameCacheFile()) {
-            updateLocalCache();
+            updateLocalNameCache();
         }
         
         return new PluginListCacheFile(new File(BukGet.instance.getDataFolder(), BukGet.BUKGET_NAME_CACHE));
+    }
+    
+    /**
+     * Deletes the local data cache file
+     */
+    public boolean deleteLocalDataCache() {
+        final File cacheFile = new File(BukGet.instance.getDataFolder(), BukGet.BUKGET_DATA_CACHE);
+        
+        if (cacheFile.exists()) {
+            return cacheFile.delete();
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -60,7 +73,7 @@ public class BukGetManager {
         if (existsNameCacheFile()) {
             plugins = getCache();
         } else {
-            updateLocalCache();
+            updateLocalNameCache();
             plugins = getCache();
         }
         
@@ -132,10 +145,23 @@ public class BukGetManager {
     }
     
     /**
+     * Deletes the local name list cache file
+     */
+    public boolean deleteLocalNameCache() {
+        final File cacheFile = new File(BukGet.instance.getDataFolder(), BukGet.BUKGET_NAME_CACHE);
+        
+        if (cacheFile.exists()) {
+            return cacheFile.delete();
+        } else {
+            return false;
+        }
+    }
+    
+    /**
      * Updates the local plugin name cache
      * @throws IOException 
      */
-    public void updateLocalCache() throws IOException {
+    public void updateLocalNameCache() throws IOException {
         // Debug Info
         BukGet.debug("Creating Cache File ...");
         

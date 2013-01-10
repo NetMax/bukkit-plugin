@@ -8,5 +8,6 @@ public enum BukGetCommandResult {
     SUCCESS,
     INSUFFICIENT_ARGUMENTS,
     ILLEGAL_ARGUMENT,
-    NO_PERMISSION;
+    NO_PERMISSION,
+    FATAL_ERROR;
 }

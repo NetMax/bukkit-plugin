@@ -99,8 +99,8 @@ public class BukGet extends JavaPlugin {
     }
     
     private void initCommands() {
-        getCmdManager().registerCommand("cache", CommandCache.class);
         getCmdManager().registerCommand("debug", CommandDebugMode.class);
+        getCmdManager().registerCommand("cache", CommandCache.class);
     }
     
     public BukGetManager getManager() {

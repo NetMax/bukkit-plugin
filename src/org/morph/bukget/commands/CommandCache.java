@@ -1,13 +1,24 @@
 package org.morph.bukget.commands;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.json.simple.parser.ParseException;
+import org.morph.bukget.BukGet;
 
 /**
  * The '/bukget cache' Command
  * @author Morphesus
  */
 public class CommandCache implements BukGetCommand {
+    public static final int PAGE_MAX_ENTRIES = 10;
+    
+    private CommandSender sender;
+    private String[] args;
+    
     @Override
     public String getName() {
         return "cache";
@@ -33,6 +44,9 @@ public class CommandCache implements BukGetCommand {
 
     @Override
     public BukGetCommandResult exec(JavaPlugin plugin, CommandSender sender, String[] args) {
+        this.sender = sender;
+        this.args   = args;
+        
         // -- Check root permission node for bukget.cache
         if (!sender.hasPermission("bukget.cache")) {
             return BukGetCommandResult.NO_PERMISSION;
@@ -90,14 +104,128 @@ public class CommandCache implements BukGetCommand {
     }
     
     private BukGetCommandResult update(String cacheType) {
-        return BukGetCommandResult.SUCCESS;
+        // -- Update the local name list cache
+        if (cacheType.equalsIgnoreCase("names")) {
+            try {
+                BukGet.instance.getManager().updateLocalNameCache();
+                return BukGetCommandResult.SUCCESS;
+            } catch (IOException ex) {
+                BukGet.instance.getLogger().log(Level.SEVERE, null, ex);
+                return BukGetCommandResult.FATAL_ERROR;
+            }
+        }
+        
+        // -- Full update (includes all plugin details)
+        else if (cacheType.equalsIgnoreCase("full")) {
+            try {
+                BukGet.instance.getManager().updateLocalDataCache();
+                return BukGetCommandResult.SUCCESS;
+            } catch (IOException ex) {
+                BukGet.instance.getLogger().log(Level.SEVERE, null, ex);
+                return BukGetCommandResult.FATAL_ERROR;
+            } catch (ParseException ex) {
+                BukGet.instance.getLogger().log(Level.SEVERE, null, ex);
+                return BukGetCommandResult.FATAL_ERROR;
+            }
+        }
+        
+        // -- Unknown Cache Type
+        else {
+            return BukGetCommandResult.ILLEGAL_ARGUMENT;
+        }
     }
     
     private BukGetCommandResult delete(String cacheType) {
-        return BukGetCommandResult.SUCCESS;
+        // -- Update the local name list cache
+        if (cacheType.equalsIgnoreCase("names")) {
+            boolean result = BukGet.instance.getManager().deleteLocalNameCache();
+            if (result) {
+                this.sender.sendMessage("Cache is deleted");
+            } else {
+                this.sender.sendMessage("Could not delete cache");
+            }
+            
+            return BukGetCommandResult.SUCCESS;
+        }
+        
+        // -- Full update (includes all plugin details)
+        else if (cacheType.equalsIgnoreCase("full")) {
+            boolean result = BukGet.instance.getManager().deleteLocalDataCache();
+            if (result) {
+                this.sender.sendMessage("Cache is deleted");
+            } else {
+                this.sender.sendMessage("Could not delete cache");
+            }
+            
+            return BukGetCommandResult.SUCCESS;
+        }
+        
+        // -- Unknown Cache Type
+        else {
+            return BukGetCommandResult.ILLEGAL_ARGUMENT;
+        }
     }
     
     private BukGetCommandResult list() {
-        return BukGetCommandResult.SUCCESS;
+        // -- Validate and load plugin cache
+        List<String> pluginList;
+        try {
+            pluginList = BukGet.instance.getManager().getPluginList();
+        } catch (IOException ex) {
+            BukGet.instance.getLogger().log(Level.SEVERE, null, ex);
+            return BukGetCommandResult.FATAL_ERROR;
+        }
+        
+        // -- Plugin List exists and is valid
+        if (pluginList != null && pluginList.size() > 0) {
+            List<String> view = new ArrayList<String>();
+            
+            // -- Calculate pages count
+            int pages = pluginList.size() / PAGE_MAX_ENTRIES;
+            if ((pages * PAGE_MAX_ENTRIES) < pluginList.size()) {
+                pages++;
+            }
+            
+            // -- Which page the user will see?
+            int showPage = 0;
+            if (args.length > 2) {
+                try {
+                    showPage = Integer.parseInt(args[2]) - 1;
+                } catch (NumberFormatException e) {
+                    showPage = 0;
+                }
+            }
+            
+            // -- Check page existence
+            if (showPage < 0) {
+                showPage = 0;
+            } else if (showPage > pages) {
+                showPage = pages - 1;
+            }
+            
+            // -- Start- and Endpoint
+            int start = showPage * PAGE_MAX_ENTRIES;
+            int end   = start + PAGE_MAX_ENTRIES;
+            
+            // -- Put header in message array
+            view.add(String.format("== Plugins %d to %d (from %d Plugins) ==", start+1, end, pluginList.size()));
+            
+            // -- Load plugin names into message array
+            for (int i = start; i < start + PAGE_MAX_ENTRIES; i++) {
+                if (i < pluginList.size()) {
+                    view.add("- " + pluginList.get(i));
+                }
+            }
+            
+            // -- Send the message array
+            String[] toSend = new String[view.size()];
+            view.toArray(toSend);
+            
+            this.sender.sendMessage(toSend);
+            
+            return BukGetCommandResult.SUCCESS;
+        } else {
+            return BukGetCommandResult.FATAL_ERROR;
+        }
     }
 }
