@@ -106,26 +106,34 @@ public class CommandCache implements BukGetCommand {
     private BukGetCommandResult update(String cacheType) {
         // -- Update the local name list cache
         if (cacheType.equalsIgnoreCase("names")) {
-            try {
-                BukGet.instance.getManager().updateLocalNameCache();
-                return BukGetCommandResult.SUCCESS;
-            } catch (IOException ex) {
-                BukGet.instance.getLogger().log(Level.SEVERE, null, ex);
-                return BukGetCommandResult.FATAL_ERROR;
+            if (this.sender.hasPermission("bukget.cache.update.names")) {
+                try {
+                    BukGet.instance.getManager().updateLocalNameCache();
+                    return BukGetCommandResult.SUCCESS;
+                } catch (IOException ex) {
+                    BukGet.instance.getLogger().log(Level.SEVERE, null, ex);
+                    return BukGetCommandResult.FATAL_ERROR;
+                }
+            } else {
+                return BukGetCommandResult.NO_PERMISSION;
             }
         }
         
         // -- Full update (includes all plugin details)
         else if (cacheType.equalsIgnoreCase("full")) {
-            try {
-                BukGet.instance.getManager().updateLocalDataCache();
-                return BukGetCommandResult.SUCCESS;
-            } catch (IOException ex) {
-                BukGet.instance.getLogger().log(Level.SEVERE, null, ex);
-                return BukGetCommandResult.FATAL_ERROR;
-            } catch (ParseException ex) {
-                BukGet.instance.getLogger().log(Level.SEVERE, null, ex);
-                return BukGetCommandResult.FATAL_ERROR;
+            if (this.sender.hasPermission("bukget.cache.update.full")) {
+                try {
+                    BukGet.instance.getManager().updateLocalDataCache();
+                    return BukGetCommandResult.SUCCESS;
+                } catch (IOException ex) {
+                    BukGet.instance.getLogger().log(Level.SEVERE, null, ex);
+                    return BukGetCommandResult.FATAL_ERROR;
+                } catch (ParseException ex) {
+                    BukGet.instance.getLogger().log(Level.SEVERE, null, ex);
+                    return BukGetCommandResult.FATAL_ERROR;
+                }
+            } else {
+                return BukGetCommandResult.NO_PERMISSION;
             }
         }
         
@@ -138,26 +146,34 @@ public class CommandCache implements BukGetCommand {
     private BukGetCommandResult delete(String cacheType) {
         // -- Update the local name list cache
         if (cacheType.equalsIgnoreCase("names")) {
-            boolean result = BukGet.instance.getManager().deleteLocalNameCache();
-            if (result) {
-                this.sender.sendMessage("Cache is deleted");
+            if (this.sender.hasPermission("bukget.cache.delete.names")) {
+                boolean result = BukGet.instance.getManager().deleteLocalNameCache();
+                if (result) {
+                    this.sender.sendMessage("Cache is deleted");
+                } else {
+                    this.sender.sendMessage("Could not delete cache");
+                }
+
+                return BukGetCommandResult.SUCCESS;
             } else {
-                this.sender.sendMessage("Could not delete cache");
+                return BukGetCommandResult.NO_PERMISSION;
             }
-            
-            return BukGetCommandResult.SUCCESS;
         }
         
         // -- Full update (includes all plugin details)
         else if (cacheType.equalsIgnoreCase("full")) {
-            boolean result = BukGet.instance.getManager().deleteLocalDataCache();
-            if (result) {
-                this.sender.sendMessage("Cache is deleted");
+            if (this.sender.hasPermission("bukget.cache.delete.full")) {
+                boolean result = BukGet.instance.getManager().deleteLocalDataCache();
+                if (result) {
+                    this.sender.sendMessage("Cache is deleted");
+                } else {
+                    this.sender.sendMessage("Could not delete cache");
+                }
+
+                return BukGetCommandResult.SUCCESS;
             } else {
-                this.sender.sendMessage("Could not delete cache");
+                return BukGetCommandResult.NO_PERMISSION;
             }
-            
-            return BukGetCommandResult.SUCCESS;
         }
         
         // -- Unknown Cache Type

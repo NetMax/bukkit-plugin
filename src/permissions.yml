@@ -1,0 +1,22 @@
+# The BukGet Permissions
+
+permissions:
+  # Command: /bukget cache
+  - bukget.cache
+  - bukget.cache.update
+  - bukget.cache.update.names
+  - bukget.cache.update.full
+  - bukget.cache.delete
+  - bukget.cache.delete.names
+  - bukget.cache.delete.full
+  - bukget.cache.list
+  
+  # Command: /bukget debug
+  - bukget.debug
+  
+  # Command: /bukget plugin
+  - bukget.plugin
+  - bukget.plugin.info
+  - bukget.plugin.enable
+  - bukget.plugin.disable
+  - bukget.plugin.install
