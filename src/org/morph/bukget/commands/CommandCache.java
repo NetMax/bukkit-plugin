@@ -225,6 +225,7 @@ public class CommandCache implements BukGetCommand {
             
             return BukGetCommandResult.SUCCESS;
         } else {
+            BukGet.instance.getLogger().severe("Could not get the plugin list. Please delete the name_cache.dat file to solve this issue!");
             return BukGetCommandResult.FATAL_ERROR;
         }
     }

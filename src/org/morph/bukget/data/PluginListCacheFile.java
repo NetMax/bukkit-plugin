@@ -99,12 +99,9 @@ public class PluginListCacheFile extends BaseCacheFile {
         dos.close();
     }
     
-    public final boolean open() throws IOException {
+    public final void open() throws IOException {
         if (this.file != null) {
             openFile(this.file);
-            return true;
-        } else {
-            return false;
         }
     }
 

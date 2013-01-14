@@ -54,6 +54,9 @@ public class BukGet extends JavaPlugin {
                         case NO_PERMISSION:
                             sender.sendMessage(ChatColor.RED + "Sorry, you don't have the permission to use this command!");
                             return true;
+                        case FATAL_ERROR:
+                            sender.sendMessage(ChatColor.DARK_RED + "Fatal Error! Please check the console output for more informations!");
+                            return true;
                         default:
                             return false;
                     }
