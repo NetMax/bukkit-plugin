@@ -170,7 +170,7 @@ public class CommandCache implements BukGetCommand {
         // -- Validate and load plugin cache
         List<String> pluginList;
         try {
-            pluginList = BukGet.instance.getManager().getPluginList();
+            pluginList = BukGet.instance.getManager().getLocalNameCache().getPluginNames();
         } catch (IOException ex) {
             BukGet.instance.getLogger().log(Level.SEVERE, null, ex);
             return BukGetCommandResult.FATAL_ERROR;

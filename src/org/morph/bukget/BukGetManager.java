@@ -37,7 +37,7 @@ public class BukGetManager {
      * @return The local plugin name cache
      * @throws IOException 
      */
-    public PluginListCacheFile getCache() throws IOException {
+    public PluginListCacheFile getLocalNameCache() throws IOException {
         if (!existsNameCacheFile()) {
             updateLocalNameCache();
         }
@@ -71,10 +71,10 @@ public class BukGetManager {
         
         PluginListCacheFile plugins;
         if (existsNameCacheFile()) {
-            plugins = getCache();
+            plugins = getLocalNameCache();
         } else {
             updateLocalNameCache();
-            plugins = getCache();
+            plugins = getLocalNameCache();
         }
         
         if (plugins != null) {
